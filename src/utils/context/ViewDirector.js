@@ -3,9 +3,10 @@ import { useAuth } from '@/utils/context/authContext';
 import Loading from '@/components/Loading';
 import SignIn from '@/components/SignIn';
 import NavBar from '@/components/NavBar';
+import RegisterForm from '@/components/RegisterForm';
 
 function ViewDirectorBasedOnUserAuthStatus({ children }) {
-  const { user, userLoading } = useAuth();
+  const { user, userLoading, updateUser } = useAuth();
 
   // if user state is null, then show loader
   if (userLoading) {
@@ -16,8 +17,11 @@ function ViewDirectorBasedOnUserAuthStatus({ children }) {
   if (user) {
     return (
       <>
-        <NavBar /> {/* NavBar only visible if user is logged in and is in every view */}
-        {children}
+        <NavBar />
+        <div className="container">
+          {
+            'valid' in user
+              ? <RegisterForm user={user} updateUser={updateUser} /> : children}</div>
       </>
     );
   }
