@@ -1,5 +1,6 @@
 {
-  "name": "nextjs-app-router-with-firebase-auth",
+  "name": "levelup-client",
+  "author": "Jaylen W.",
   "version": "0.1.0",
   "private": true,
   "scripts": {
