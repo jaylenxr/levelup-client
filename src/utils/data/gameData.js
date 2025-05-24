@@ -1,5 +1,6 @@
 import { clientCredentials } from '../client';
 
+// GET GAMES (lists)
 const getGames = () =>
   new Promise((resolve, reject) => {
     fetch(`${clientCredentials.databaseURL}/games`)
