@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Link from 'next/link';
@@ -17,6 +19,12 @@ export default function NavBar() {
             {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
             <Link className="nav-link" href="/">
               Home
+            </Link>
+            <Link className="nav-link" href="/games">
+              Games
+            </Link>
+            <Link className="nav-link" href="/events">
+              Events
             </Link>
           </Nav>
 

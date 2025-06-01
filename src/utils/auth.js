@@ -13,7 +13,7 @@ const signOut = () => {
 
 const checkUser = (uid) =>
   new Promise((resolve, reject) => {
-    fetch(`${clientCredentials.databaseURL}checkuser`, {
+    fetch(`${clientCredentials.databaseURL}/checkuser`, {
       method: 'POST',
       body: JSON.stringify({ uid }),
       headers: {
@@ -27,7 +27,7 @@ const checkUser = (uid) =>
 
 const registerUser = (userInfo) =>
   new Promise((resolve, reject) => {
-    fetch(`${clientCredentials.databaseURL}register`, {
+    fetch(`${clientCredentials.databaseURL}/register`, {
       method: 'POST',
       body: JSON.stringify(userInfo),
       headers: {
