@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { useRouter } from 'next/navigation';
+import { Card, Button } from 'react-bootstrap';
 
-function EventCard({ gameId, description, date, time, userId }) {
+function EventCard({ id, gameId, description, date, time, userId }) {
+  const router = useRouter();
+
   return (
     <Card className="text-center">
       <Card.Header>{gameId}</Card.Header>
@@ -12,12 +15,23 @@ function EventCard({ gameId, description, date, time, userId }) {
         <Card.Text>
           <strong>Date:</strong> {date} at {time}
         </Card.Text>
+        <Button
+          onClick={() => {
+            router.push(`/events/edit/${id}`);
+          }}
+          variant="outline-secondary"
+          size="sm"
+          className="mt-2"
+        >
+          ✏️ Edit
+        </Button>
       </Card.Body>
     </Card>
   );
 }
 
 EventCard.propTypes = {
+  id: PropTypes.number.isRequired,
   gameId: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

@@ -26,7 +26,7 @@ function Home() {
       </Button>
       {events.map((event) => (
         <section key={`event--${event.id}`} className="event">
-          <EventCard gameId={event.game} description={event.description} time={event.time} date={event.date} userId={event.organizer} />
+          <EventCard id={event.id} gameId={event.game} description={event.description} time={event.time} date={event.date} userId={event.organizer} />
         </section>
       ))}
     </article>

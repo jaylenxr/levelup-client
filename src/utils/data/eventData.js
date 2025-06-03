@@ -11,6 +11,20 @@ const getEvents = () =>
       .catch(reject);
   });
 
+// GET SINGLE EVENT
+const getSingleEvent = (id) =>
+  new Promise((resolve, reject) => {
+    fetch(`${clientCredentials.databaseURL}/events/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
 // POST EVENTS (create)
 const createEvent = (event) =>
   new Promise((resolve, reject) => {
@@ -26,5 +40,19 @@ const createEvent = (event) =>
       .catch((error) => reject(error));
   });
 
+// PUT EVENT (update)
+const updateEvent = (event) =>
+  new Promise((resolve, reject) => {
+    fetch(`${clientCredentials.databaseURL}/events/${event.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(event),
+    })
+      .then((response) => resolve(response))
+      .catch(reject);
+  });
+
 // eslint-disable-next-line import/prefer-default-export
-export { getEvents, createEvent };
+export { getEvents, getSingleEvent, createEvent, updateEvent };
