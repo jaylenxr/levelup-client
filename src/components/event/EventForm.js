@@ -32,9 +32,9 @@ function EventForm({ user, eventObj = initialState }) {
   };
 
   useEffect(() => {
-    if (eventObj && eventObj.id) {
+    if (eventObj?.id) {
       setCurrentEvent({
-        gameId: String(eventObj.game?.id || 0),
+        gameId: String(eventObj.game || 0),
         description: eventObj.description || '',
         date: eventObj.date || '',
         time: eventObj.time || '',
@@ -46,15 +46,16 @@ function EventForm({ user, eventObj = initialState }) {
     e.preventDefault();
 
     const event = {
-      game: Number(currentEvent.gameId),
+      id: eventObj.id,
+      gameId: Number(currentEvent.gameId),
       description: currentEvent.description,
       date: currentEvent.date,
       time: currentEvent.time,
       userId: user.uid,
     };
 
-    if (eventObj && eventObj.id) {
-      updateEvent(eventObj.id, event).then(() => router.push('/events'));
+    if (eventObj?.id) {
+      updateEvent(event).then(() => router.push('/events'));
     } else {
       createEvent(event).then(() => router.push('/events'));
     }

@@ -10,23 +10,28 @@ function Home() {
   const [games, setGames] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
+  const getAllGames = () => {
     getGames().then((data) => setGames(data));
+  };
+  useEffect(() => {
+    getAllGames();
   }, []);
 
   return (
     <article className="games">
       <h1>Games</h1>
-      <Button
-        onClick={() => {
-          router.push('/games/new');
-        }}
-      >
-        Register New Game
-      </Button>
+      <div className="d-flex justify-content-center mb-3">
+        <Button
+          onClick={() => {
+            router.push('/games/new');
+          }}
+        >
+          Register New Game
+        </Button>
+      </div>
       {games.map((game) => (
         <section key={`game--${game.id}`} className="game">
-          <GameCard id={game.id} title={game.title} maker={game.maker} gameTypeId={game.game_type} numberOfPlayers={game.number_of_players} skillLevel={game.skill_level} />
+          <GameCard id={game.id} title={game.title} maker={game.maker} gameTypeId={game.game_type} numberOfPlayers={game.number_of_players} skillLevel={game.skill_level} onUpdate={getAllGames} />
         </section>
       ))}
     </article>
