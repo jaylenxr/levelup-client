@@ -10,8 +10,11 @@ function Home() {
   const [events, setEvents] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
+  const getAllEvents = () => {
     getEvents().then((data) => setEvents(data));
+  };
+  useEffect(() => {
+    getAllEvents();
   }, []);
 
   return (
@@ -26,7 +29,7 @@ function Home() {
       </Button>
       {events.map((event) => (
         <section key={`event--${event.id}`} className="event">
-          <EventCard id={event.id} gameId={event.game} description={event.description} time={event.time} date={event.date} userId={event.organizer} />
+          <EventCard id={event.id} gameId={event.game} description={event.description} time={event.time} date={event.date} userId={event.organizer} onUpdate={getAllEvents} />
         </section>
       ))}
     </article>

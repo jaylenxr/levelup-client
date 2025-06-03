@@ -4,8 +4,14 @@ import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import { deleteGame } from '../../utils/data/gameData';
 
-function GameCard({ id, title, maker, numberOfPlayers, skillLevel, gameTypeId }) {
+function GameCard({ id, title, maker, numberOfPlayers, skillLevel, gameTypeId, onUpdate }) {
+  const deleteCurrentGame = () => {
+    if (window.confirm(`Delete ${title}?`)) {
+      deleteGame(id).then(() => onUpdate());
+    }
+  };
   const router = useRouter();
   return (
     <Card className="text-center">
@@ -14,6 +20,9 @@ function GameCard({ id, title, maker, numberOfPlayers, skillLevel, gameTypeId })
         <Card.Title>By: {maker}</Card.Title>
         <Card.Text>{gameTypeId}</Card.Text>
         <Card.Text>{numberOfPlayers} players needed</Card.Text>
+        <Card.Text className="text-muted">Skill Level: {skillLevel}</Card.Text>
+      </Card.Body>
+      <Card.Footer>
         <Button
           onClick={() => {
             router.push(`/games/edit/${id}`);
@@ -24,8 +33,17 @@ function GameCard({ id, title, maker, numberOfPlayers, skillLevel, gameTypeId })
         >
           ✏️ Edit
         </Button>
-      </Card.Body>
-      <Card.Footer className="text-muted">Skill Level: {skillLevel}</Card.Footer>
+        <Button
+          variant="outline-danger"
+          size="sm"
+          className="mt-2"
+          onClick={() => {
+            deleteCurrentGame();
+          }}
+        >
+          🗑️ Delete
+        </Button>
+      </Card.Footer>
     </Card>
   );
 }
@@ -37,6 +55,7 @@ GameCard.propTypes = {
   numberOfPlayers: PropTypes.number.isRequired,
   skillLevel: PropTypes.number.isRequired,
   gameTypeId: PropTypes.number.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default GameCard;
