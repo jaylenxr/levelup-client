@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { getGames } from '../../utils/data/gameData';
-import { createEvent } from '../../utils/data/eventData';
+import { createEvent, updateEvent } from '../../utils/data/eventData';
 
 const initialState = {
-  gameId: '',
+  gameId: 0,
   description: '',
   date: '',
   time: '',
 };
 
-function EventForm({ user }) {
+function EventForm({ user, eventObj = initialState }) {
   const [games, setGames] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(initialState);
   const router = useRouter();
@@ -31,18 +31,33 @@ function EventForm({ user }) {
     }));
   };
 
+  useEffect(() => {
+    if (eventObj && eventObj.id) {
+      setCurrentEvent({
+        gameId: String(eventObj.game?.id || 0),
+        description: eventObj.description || '',
+        date: eventObj.date || '',
+        time: eventObj.time || '',
+      });
+    }
+  }, [eventObj]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const event = {
-      gameId: Number(currentEvent.gameId),
+      game: Number(currentEvent.gameId),
       description: currentEvent.description,
       date: currentEvent.date,
       time: currentEvent.time,
       userId: user.uid,
     };
 
-    createEvent(event).then(() => router.push('/events'));
+    if (eventObj && eventObj.id) {
+      updateEvent(eventObj.id, event).then(() => router.push('/events'));
+    } else {
+      createEvent(event).then(() => router.push('/events'));
+    }
   };
 
   return (
@@ -83,8 +98,8 @@ function EventForm({ user }) {
         </Col>
       </Row>
 
-      <Button variant="primary" type="submit" className="w-100">
-        Create Event
+      <Button variant="primary" type="submit" className="eForm">
+        {eventObj.id ? 'Update' : 'Create'} Event
       </Button>
     </Form>
   );
@@ -94,6 +109,13 @@ EventForm.propTypes = {
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
   }).isRequired,
+  eventObj: PropTypes.shape({
+    id: PropTypes.number,
+    gameId: PropTypes.number,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    time: PropTypes.string,
+  }),
 };
 
 export default EventForm;
