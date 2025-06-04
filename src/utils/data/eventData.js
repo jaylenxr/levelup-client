@@ -3,9 +3,15 @@
 import { clientCredentials } from '../client';
 
 // GET EVENTS (list)
-const getEvents = () =>
+const getEvents = (uid) =>
   new Promise((resolve, reject) => {
-    fetch(`${clientCredentials.databaseURL}/events`)
+    fetch(`${clientCredentials.databaseURL}/events`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: uid, // UID only w/o "Bearer" or "Token"
+      },
+    })
       .then((response) => response.json())
       .then(resolve)
       .catch(reject);
@@ -67,5 +73,37 @@ const deleteEvent = (id) =>
       .catch(reject);
   });
 
+// JOIN EVENT (signup)
+const joinEvent = (eventId, uid) =>
+  new Promise((resolve, reject) => {
+    fetch(`${clientCredentials.databaseURL}/events/${eventId}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: uid,
+      },
+      body: JSON.stringify({ user_id: uid }),
+    })
+      .then((response) => response.json())
+      .then(() => getEvents(uid)) // gets all joined events by uid
+      .then(resolve)
+      .catch(reject);
+  });
+
+// LEAVE EVENT
+const leaveEvent = (eventId, uid) =>
+  new Promise((resolve, reject) => {
+    fetch(`${clientCredentials.databaseURL}/events/${eventId}/leave`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: uid,
+      },
+      body: JSON.stringify({ user_id: uid }),
+    })
+      .then(() => getEvents(uid)) // getEvents will call to refresh the list after leaving an event.
+      .then(resolve)
+      .catch(reject);
+  });
 // eslint-disable-next-line import/prefer-default-export
-export { getEvents, getSingleEvent, createEvent, updateEvent, deleteEvent };
+export { getEvents, getSingleEvent, createEvent, updateEvent, deleteEvent, joinEvent, leaveEvent };
